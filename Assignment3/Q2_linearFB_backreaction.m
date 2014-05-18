@@ -1,6 +1,6 @@
 % Dynamical Modeling Methods for Systems Biology
 % Mar 2014
-% Assignment 3
+% Assignment 3 - Question 2
 
 % Rate-balance plots
 % 
@@ -35,16 +35,17 @@
 % this system? (Assume: kminus = 5, kplus=2, kf=30, S=1) 
 % A.  The only condition in which bistability present is when Kmb >1. 
 % B.  When  Kmb >0.1 bistability is present. 
-% <<C>>.  When Kmb >3 , there is no bistability in the system. 
+% C. <<-ANSWER  When Kmb >3 , there is no bistability in the system. 
 % D.  There is no bistability in the system when 0.1 > Kmb  .
 
 Astar = 0:0.01:1 ;
-S = 1;
+S = 0;  %use for initial investigation
+%S = 1;  %use to answer Question 2
 kplus = 2 ;
 kfs = 30 ;
 kminus = 5 ;
-%Kmb = 0:0.2:4 ; % back reaction
-Kmb = 1 ; % back reaction
+Kmb = 0:0.01:0.5 ; % back reaction, use for initial investigation
+%Kmb = 0:0.1:4 ; % back reaction, use to answer Question 2
 
 % Plot Forward/Backward Rates vs Phosphorylation
 figure
@@ -89,65 +90,4 @@ figure(handle2)
 set(gca,'TickDir','Out')
 xlabel('Partially Saturated Back Reaction Coeff [Kmb]')
 ylabel('Steady-state [A*]/[A]')
-
-% Question 3
-% In the above case assume that Kmb is fixed and equals to 1 , which of the
-% following statements is correct? (kminus = 5, kplus=2, kf=30) (Remeber
-% that S can not be a negative number)
-% A.  The system shows bistability when S>1.
-% <<B>>.  The system is always mono-stable regardless of value of S.
-% C.  The system shows bistability when 0.1<S<1 .
-% D.  The system shows bistability when S>3.
-
-
-Astar = 0:0.01:1 ;
-S = 0:0.25:5;
-kplus = 2 ;
-kfs = 30 ;
-kminus = 5 ;
-Kmb = 1 ; % back reaction is fixed
-
-% Plot Forward/Backward Rates vs Phosphorylation
-figure
-handle1 = gcf ;  % "get current figure"
-hold on 
-set(gca,'TickDir','Out')  % "get current axes"
-
-% Plot Bifurcation Diagram (where BR=FR)
-% Phosphorylation as a function of S
-figure
-handle2 = gcf ;
-hold on
-
-% iterate for varying increments of Kmb
-for i=1:length(S)
-  BR = kminus*(Astar./(Astar + Kmb)) ;  
-  FR = (kplus.*S(i) + kfs.*Astar).*(1-Astar) ;
-  figure(handle1)
-  plot(Astar,FR,'b','LineWidth',2)
-  plot(Astar,BR,'r','LineWidth',2)
-  
-  crossings = [] ;
-  difference = FR-BR ;
-  for iii=2:length(FR)
-    if (sign(difference(iii)) ~= sign(difference(iii-1)))
-      crossings = [crossings,iii] ;
-    end
-  end
-  figure(handle2)
-  plot(S(i),Astar(crossings),'bo')
-  
-end
-
-% decorate plots
-figure(handle1)
-axis([0 1 0 max(FR)])
-set(gca,'TickDir','Out')
-xlabel('[A*]/[A]')
-ylabel('Rates')
-
-figure(handle2)
-set(gca,'TickDir','Out')
-xlabel('Stimulus [S]')
-ylabel('Steady-state [A*]/[A]')
-
+title('Bifurcation Diagram')
