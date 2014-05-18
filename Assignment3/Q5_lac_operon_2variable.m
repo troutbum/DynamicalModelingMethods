@@ -22,7 +22,8 @@ l = 0:0.05:15 ;
 % cause the bacteria to change states.
 % Plot the nullclines of this model for lext=2.5.
 
-lext = 2.5 ; 
+lext = 0:2.5:2.5 ; % analyze single external lactose level
+%lext = 0:0.5:5 ; % analyze a range
 
 % Because of the l^4 term appearing in the second equation, it is easiest
 % to treat LacY as the dependent variable (ordinate) and l as the
@@ -30,11 +31,11 @@ lext = 2.5 ;
 
 % Nucline for lactose (dl/dt)
 % Solve dl/dt=0 
-% --> FR: LacY =(gamma*l)/(beta*lext) ;
+% --> BR: BR = (gamma.*l)/(beta*lext) ;
 %
 % Nullcline for LacY (dLacY/dt)
 % Solve dLacY/dt=0 
-% --> BR: LacY =(delta + p*(l^4/(l^4 + l0^4)))/sigma
+% --> FR = (delta + (p .* ((l.^4) ./ ((l.^4) + (lzero^4)))))./sigma
 
 % Which of the following statements is correct?
 %
@@ -62,8 +63,8 @@ hold on
 
 % iterate for varying increments of Kmb
 for i=1:length(lext)
-  BR = (gamma.*l)/(beta*lext) ;
-  FR = (delta + (p .* ((l.^4) ./ ((l.^4) + (lzero^4)))))./sigma
+  BR = (gamma.*l)/(beta*lext(i)) ;
+  FR = (delta + (p .* ((l.^4) ./ ((l.^4) + (lzero^4)))))./sigma ;
   figure(handle1)
   plot(l,FR,'b','LineWidth',2)
   plot(l,BR,'r','LineWidth',2)
@@ -84,12 +85,13 @@ end
 figure(handle1)
 axis([0 max(l) 0 max(FR)])
 set(gca,'TickDir','Out')
-xlabel('[LacY]')
-ylabel('[lactose]')
+xlabel('[lactose]')
+ylabel('[LacY]')
 title('Lac Operon Model for E. Coli')
+legend('dLacY/dt','dl/dt')
 
 figure(handle2)
 set(gca,'TickDir','Out')
-xlabel('Partially Saturated Back Reaction Coeff [Kmb]')
-ylabel('Steady-state [A*]/[A]')
+xlabel('External Lactose [lext]')
+ylabel('Intracellular Lactose [l]')
 title('Bifurcation Diagram')
