@@ -1,28 +1,24 @@
 % Dynamical Modeling Methods for Systems Biology
 % Mar 2014
-% Assignment 3 - Question 6
+% Assignment 3 - Question 7
 
-% Modify the program repression.m so that this model now simulates the
-% temporal evolution of l and LacY. To reach steady-state, a total
-% simulation time of 20 seconds is reasonable, and the solution converges
-% with a time step of 0.01 if Euler's method is used.
-%
-% For lext= 2.5, plot the time evolution of LacY and l for the following
-% initial conditions:
-% 
-% 1)  l=8, LacY=3;
-% 2)  l=3, LacY=1.3;
-% 3)  l=3, LacY=1.2;
-% 4)  l=2, LacY=1;
-% 
-% Which of the following statements is correct?
-% A. Initial values of LacY and  determine if they will reach their lower
-% or higher stable steady state levels.
-% B. Changing the initial condition of LacY and can remove the bistability
-% from the system.
-% C. l has always lower stable steady state levels compared to LacY.
-% D. LacY has two stable steady states and l has one stable steady state.
+% Question 7
+% Vary lext over the range 1 to 7 and compute the temporal evolution of
+% l?and LacY. For each simulation, store the final value of LacY.
 
+% Run two sets of simulations: one in which the initial conditions are l=8,
+% LacY=3, and a second in which the initial conditions are l=2, LacY=1.
+
+% Generate a bifurcation diagram of how the final value of LacY varies as a
+% function of lext. Plot the results of the two sets of simulations in
+% different colors.
+
+% Which of the following statements is correct? 
+% A. For ? > 6 the system is bistable.
+% B. When extracellular lactose is less than 1, the system is bistable.
+% C. Changing the initial conditions of l and LacY can change the
+% bifurcation points.
+% D. When 2 < lext < 4 , the system is bistable.
 
 colors = repmat('krgbmc',1,300) ;
 
@@ -39,11 +35,11 @@ sigma = 1 ;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% 2:  Define parameters that will be varied 
    
-lics = [8,3,3,2] ;       % lactose initial conditions
-LacYics = [3,1.3,1.2,1] ;  % LacY initial conditions
+lics = [8,2] ;       % lactose initial conditions
+LacYics = [3,1] ;  % LacY initial conditions
 tests = length(lics) ;
 
-lext = [2.5] ;
+lext = [1:1:7] ;
 trials = length(lext) ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -88,14 +84,14 @@ for iii=1:tests % different initial conditions
     if (iii==1)
         
     plot(time,squeeze(l_all(iii,ii,:)), ...
-        [colors(iii),'-'],'LineWidth',0.5)
+        [colors(ii),'-'],'LineWidth',0.5)
     plot(time,squeeze(LacY_all(iii,ii,:)), ...
-        [colors(iii),'-'],'LineWidth',3.2)
+        [colors(ii),'-'],'LineWidth',3.2)
     else
       plot(time,squeeze(l_all(iii,ii,:)), ...
-        [colors(iii),':'],'LineWidth',0.5)
+        [colors(ii),':'],'LineWidth',0.5)
           plot(time,squeeze(LacY_all(iii,ii,:)), ...
-        [colors(iii),':'],'LineWidth',3.2)
+        [colors(ii),':'],'LineWidth',3.2)
     end % different values of lext
   end % different sets of initial conditions
 
@@ -104,3 +100,15 @@ xlabel('time (s)')
 title('LacY (thick line) and lactose (thin line')
 set(gca,'TickDir','Out')
 
+% Plot Bifurcation Diagram
+% Final value of LacY vs lext (external lactose)
+figure
+hold on
+plot(lext,LacY_all(1,:,iterations),'g','LineWidth',2)
+plot(lext,LacY_all(2,:,iterations),'r','LineWidth',2)
+xlabel('External Lactose [lext]')
+ylabel('LacY')
+title('Bifurcation Diagram')
+figurelegend{1} = ['initial conditions:  l=8 LacY=3']; 
+figurelegend{2} = ['initial conditions:  l=2 LacY=1']; 
+legend(figurelegend,'Location','Southeast') % create legend in bottom right
