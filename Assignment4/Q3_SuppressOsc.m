@@ -1,8 +1,40 @@
+% Dynamical Modeling Methods for Systems Biology
+% Mar 2014
+% Assignment 4
+
+% Question 3
+% Lack of which of the following components can suppress the oscillations
+% in concentrations of active MPF and total Cyclin ? (Use the default
+% parameters in the code)
+
+% A. Total Cdc25.
+% B. Total anaphase-promoting complex.
+% C. Total Wee1.
+% D. Total intermediate enzyme.
+
+
+
 %%% Novak-Tyson (1993) model of Xenopus cell cycle
 %%% As described in Sible & Tyson (2007)
 %%% Some parameters modified as noted
 %
 %
+
+% My modifications to model to see effect of unreplicated DNA
+% from article:
+%
+% Journal of Cell Science 106, 1153-1168 (1993)
+% Numerical analysis of a comprehensive model of M-phase control in Xenopus
+% oocyte extracts and intact embryos
+% Bela Novak* and John J. Tyson?
+%
+% Use the changes:
+%
+%     kb = 0.1 + 0.1*(uDNA/256) ;
+%     kf = 0.1 + 0.08*(uDNA/256) ;
+
+uDNA = 0 ; % vary unreplicated DNA from 0 to 300 (see saved figures)
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Step 1:  Define constants 
@@ -15,7 +47,8 @@ global ka Ka kb Kb kc Kc kd Kd
 global ke Ke kf Kf kg Kg kh Kh
 ka = 0.02 ;
 Ka = 0.1 ;
-kb = 0.1 ;
+%kb = 0.1 ; % original value
+kb = 0.125 + 0.1*(uDNA/256) ;
 Kb = 1 ;
 kc = 0.13 ;
 Kc = 0.01 ;
@@ -23,7 +56,8 @@ kd = 0.13 ;
 Kd = 1 ;
 ke = 0.02 ;
 Ke = 1 ;
-kf = 0.1 ;
+%kf = 0.1 ;  % original value
+kf = 0.1 + 0.08*(uDNA/256) ;
 Kf = 1 ;
 kg = 0.02 ;
 Kg = 0.01 ;
@@ -45,10 +79,18 @@ global CDK_total cdc25_total wee1_total IE_total APC_total PPase
 CDK_total = 100 ;
 % % This modified to increase bistability range
 % cdc25_total = 1 ;
-cdc25_total = 5 ;
-wee1_total = 1 ;
-IE_total = 1 ;
-APC_total = 1 ;
+
+% defaults to test:
+%
+% cdc25_total = 5 ;
+% wee1_total = 1 ;
+% IE_total = 1 ;
+% APC_total = 1 ;
+
+cdc25_total = 0.75;    % no osc at < 0.7 to 0.75
+wee1_total = 1 ;    % osc even == 0
+IE_total = 1 ;      % no osc at < 0.25
+APC_total = 1 ;     % no osc at < 0.25
 PPase = 1 ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

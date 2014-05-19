@@ -36,10 +36,10 @@ sigma = 1 ;
 %%% 2:  Define parameters that will be varied 
    
 lics = [8,2] ;       % lactose initial conditions
-LacYics = [3,1] ;  % LacY initial conditions
+LacYics = [3,1] ;    % LacY initial conditions
 tests = length(lics) ;
 
-lext = [1:1:7] ;
+lext = [1:0.25:7] ;  % extracellular lactose
 trials = length(lext) ;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -106,7 +106,7 @@ figure
 hold on
 plot(lext,LacY_all(1,:,iterations),'g','LineWidth',2)
 plot(lext,LacY_all(2,:,iterations),'r','LineWidth',2)
-xlabel('External Lactose [lext]')
+xlabel('Extracellular Lactose [lext]')
 ylabel('LacY')
 title('Bifurcation Diagram')
 figurelegend{1} = ['initial conditions:  l=8 LacY=3']; 

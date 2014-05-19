@@ -1,8 +1,48 @@
+% Dynamical Modeling Methods for Systems Biology
+% Mar 2014
+% Assignment 4
+
+% Question 2
+% Okadiac acid is an inhibitor of type 1 and type 2A phosphatases such as
+% phosphatases which dephosphorylate Wee1 and Cdc25. What is the effect of
+% okadiac acid on the oscillatory behavior of this system? (Assume that the
+% concentration of the these phosphatases are fixed and just their activity
+% is inhibited)
+
+% A. It will suppress the oscillations in Active MPF and Total Cyclin
+% concentrations.
+% B. It will increase the frequency and amplitude of oscillations of Active
+% MPF and Total Cyclin concentrations.
+% C. It will increase the frequency and decrease the amplitude of
+% oscillations of Active MPF and Total Cyclin concentrations.
+% D. It will decrease the frequency and amplitude of oscillations of Active
+% MPF and Total Cyclin concentrations.
+
+
+
+
+
 %%% Novak-Tyson (1993) model of Xenopus cell cycle
 %%% As described in Sible & Tyson (2007)
 %%% Some parameters modified as noted
 %
 %
+
+% My modifications to model to see effect of unreplicated DNA
+% from article:
+%
+% Journal of Cell Science 106, 1153-1168 (1993)
+% Numerical analysis of a comprehensive model of M-phase control in Xenopus
+% oocyte extracts and intact embryos
+% Bela Novak* and John J. Tyson?
+%
+% Use the changes:
+%
+%     kb = 0.1 + 0.1*(uDNA/256) ;
+%     kf = 0.1 + 0.08*(uDNA/256) ;
+
+uDNA = 0 ; % vary unreplicated DNA from 0 to 300 (see saved figures)
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Step 1:  Define constants 
@@ -15,7 +55,8 @@ global ka Ka kb Kb kc Kc kd Kd
 global ke Ke kf Kf kg Kg kh Kh
 ka = 0.02 ;
 Ka = 0.1 ;
-kb = 0.1 ;
+%kb = 0.1 ; % original value
+kb = 0.125 + 0.1*(uDNA/256) ;
 Kb = 1 ;
 kc = 0.13 ;
 Kc = 0.01 ;
@@ -23,7 +64,8 @@ kd = 0.13 ;
 Kd = 1 ;
 ke = 0.02 ;
 Ke = 1 ;
-kf = 0.1 ;
+%kf = 0.1 ;  % original value
+kf = 0.1 + 0.08*(uDNA/256) ;
 Kf = 1 ;
 kg = 0.02 ;
 Kg = 0.01 ;
@@ -49,7 +91,11 @@ cdc25_total = 5 ;
 wee1_total = 1 ;
 IE_total = 1 ;
 APC_total = 1 ;
-PPase = 1 ;
+PPase = 1 ;  % original value
+%PPase = 0.5 ; % vary to model effect of Okadiac acid as 
+              % an inhibitor of type 1 and type 2A phosphatases
+              % PPase = 0.25 no oscillations
+              % PPase = 0.5 slower and lower than PPase=1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%% Step 2:  Define simulation time 
