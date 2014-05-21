@@ -75,7 +75,7 @@ global ke Ke kf Kf kg Kg kh Kh
 ka = 0.02 ;
 Ka = 0.1 ;
 %kb = 0.1 ; % original value
-kb = 0.125 + 0.1*(uDNA/256) ;
+kb = 0.1 + 0.1*(uDNA/256) ;
 Kb = 1 ;
 kc = 0.13 ;
 Kc = 0.01 ;
